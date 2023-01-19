@@ -22,6 +22,11 @@ benchmark["mem_rel"] = mem_rel
 g = sns.FacetGrid(benchmark, col="simplify", hue="method")
 g.map(sns.scatterplot, "N", "time_rel")
 g.add_legend()
+g.set(ylim=(0, 1.5))
+
+for ax in g.axes[0]:
+    for y in np.arange(0.25, 1.5, 0.25):
+        ax.axhline(y, ls="dashed", color="gray", alpha=0.25)
 
 plt.savefig("benchmark_time_rel.png")
 
