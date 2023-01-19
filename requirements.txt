@@ -1,3 +1,5 @@
 tskit
 numpy
 jupyterlab
+seaborn
+pandas
