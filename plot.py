@@ -35,3 +35,38 @@ g.map(sns.scatterplot, "N", "mem_rel")
 g.add_legend()
 
 plt.savefig("benchmark_mem_rel.png")
+
+# Now, plot absolute timings/mem use
+
+g = sns.FacetGrid(benchmark, col="simplify", hue="method")
+time = benchmark["time"]/60.0/60.0
+benchmark["hours"] = time
+g.map(sns.scatterplot, "N", "hours", alpha=0.5)
+g.set(ylabel="Time (hours)")
+g.add_legend()
+plt.savefig("benchmark_time.png")
+
+mem = benchmark["mem"]/1024.0/1024.0
+benchmark["GB"] = mem
+g = sns.relplot(benchmark, x="N", y="GB",
+                col="simplify", hue="method", style="method")
+# g.map(sns.scatterplot, "N", "GB", alpha=0.5)
+g.set(ylabel="Peak memory (GB)")
+g.add_legend()
+plt.savefig("benchmark_mem.png")
+
+# GB difference from bookmark
+gb = np.array([i for i in benchmark["GB"]])
+for g, d in benchmark.groupby(['N', 'simplify']):
+    gb_bookmark = d['GB'][d['method'] == 'bookmark']
+    gb_g = d['GB'].sub(float(gb_bookmark))
+    gb[d.index] = gb_g
+
+benchmark["GBdelta"] = gb
+
+g = sns.relplot(benchmark, x="N", y="GBdelta",
+                col="simplify", hue="method", style="method")
+# g.map(sns.scatterplot, "N", "GB", alpha=0.5)
+g.set(ylabel="Peak memory delta from bookmark (GB)")
+g.add_legend()
+plt.savefig("benchmark_delta.png")
