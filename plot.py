@@ -69,4 +69,4 @@ g = sns.relplot(benchmark, x="N", y="GBdelta",
 # g.map(sns.scatterplot, "N", "GB", alpha=0.5)
 g.set(ylabel="Peak memory delta from bookmark (GB)")
 g.add_legend()
-plt.savefig("benchmark_delta.png")
+plt.savefig("benchmark_mem_delta.png")
