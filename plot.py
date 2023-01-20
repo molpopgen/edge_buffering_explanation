@@ -55,6 +55,22 @@ g.set(ylabel="Peak memory (GB)")
 g.add_legend()
 plt.savefig("benchmark_mem.png")
 
+# Time difference from bookmark
+
+th = np.array([i for i in benchmark["hours"]])
+for g, d in benchmark.groupby(['N', 'simplify']):
+    gh_bookmark = d['hours'][d['method'] == 'bookmark']
+    gh_g = d['hours'].sub(float(gh_bookmark))
+    th[d.index] = gh_g
+
+benchmark["hours_delta"] = th
+
+g = sns.relplot(benchmark, x="N", y="hours_delta",
+                col="simplify", hue="method", style="method")
+# g.map(sns.scatterplot, "N", "GB", alpha=0.5)
+g.set(ylabel="Time delta from bookmark (hours)")
+plt.savefig("benchmark_time_delta.png")
+
 # GB difference from bookmark
 gb = np.array([i for i in benchmark["GB"]])
 for g, d in benchmark.groupby(['N', 'simplify']):
@@ -66,7 +82,5 @@ benchmark["GBdelta"] = gb
 
 g = sns.relplot(benchmark, x="N", y="GBdelta",
                 col="simplify", hue="method", style="method")
-# g.map(sns.scatterplot, "N", "GB", alpha=0.5)
 g.set(ylabel="Peak memory delta from bookmark (GB)")
-g.add_legend()
 plt.savefig("benchmark_mem_delta.png")
