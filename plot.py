@@ -21,10 +21,10 @@ benchmark["mem_rel"] = mem_rel
 
 g = sns.relplot(benchmark, x="N", y="time_rel",
                 col="simplify", hue="method", style="method")
-g.set(ylim=(0, 1.5))
+g.set(ylim=(0, 2.0))
 
 for ax in g.axes[0]:
-    for y in np.arange(0.25, 1.5, 0.25):
+    for y in np.arange(0.25, 2.0, 0.25):
         ax.axhline(y, ls="dashed", color="gray", alpha=0.25)
 
 plt.savefig("benchmark_time_rel.png")
